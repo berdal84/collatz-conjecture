@@ -1,26 +1,24 @@
 {
-  "name": "collatz-conjecture",
-  "version": "0.1.0",
-  "description": "Single page app to show collatz conjecture visually",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack serve --mode development",
+    "build": "webpack build --mode production"
   },
-  "repository": {
-    "type": "git",
-    "url": "github.com/berdal84/collatz-conjecture"
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "postcss-loader": "^7.0.1",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
   },
-  "keywords": [
-    "collatz",
-    "conjecture",
-    "bootstrap",
-    "html",
-    "css",
-    "js"
-  ],
-  "author": "Bérenger Dalle-Cort",
-  "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.2.0"
+    "@popperjs/core": "^2.11.5",
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.9.1"
   }
 }
