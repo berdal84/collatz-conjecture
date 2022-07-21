@@ -1,5 +1,9 @@
 # Collatz conjecture visualiser
 
+<a href="https://github.com/berdal84/collatz-conjecture/actions?query=workflow Node.js CI" title="build">
+<img src="https://github.com/berdal84/collatz-conjecture/workflows/Node.js CI/badge.svg" />
+</a>
+
 ## Introduction
 
 The goal of this project is to provide a web application able to visualize the [Collatz conjecture}(https://en.wikipedia.org/wiki/Collatz_conjecture).
