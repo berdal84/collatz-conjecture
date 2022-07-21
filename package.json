@@ -1,0 +1,26 @@
+{
+  "name": "collatz-conjecture",
+  "version": "0.1.0",
+  "description": "Single page app to show collatz conjecture visually",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/berdal84/collatz-conjecture"
+  },
+  "keywords": [
+    "collatz",
+    "conjecture",
+    "bootstrap",
+    "html",
+    "css",
+    "js"
+  ],
+  "author": "Bérenger Dalle-Cort",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.0"
+  }
+}
