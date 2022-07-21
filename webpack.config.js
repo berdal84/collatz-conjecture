@@ -1,6 +1,5 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-
 
 module.exports = {
   entry: './src/js/main.js',
@@ -9,12 +8,13 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   devServer: {
-    static: path.resolve(__dirname, 'dist'),
+    static: path.resolve(__dirname, 'src/static'),
     port: 8080,
     hot: true
   },
+  devtool: 'inline-source-map',
   plugins: [
-    new HtmlWebpackPlugin()
+    //new HtmlWebpackPlugin()
   ],
   module: {
     rules: [
