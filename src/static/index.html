@@ -16,11 +16,11 @@
       <p>First, enter an initial number to start the algorithm with.</p>
       <div class="input-group w-50 mb-3">
           <span class="input-group-text" id="basic-addon1">Initial value</span>
-          <input type="text" class="form-control" placeholder="enter a integer value here"
+          <input id="init-input" type="text" class="form-control" placeholder="enter a integer value here"
                  aria-label="InitialNumber" aria-describedby="basic-addon1">
-          <button class="btn btn-primary" >RESET</button>
+          <button id="run-btn" class="btn btn-primary" ><i class="bi bi-play-circle-fill"></i> RUN</button>
       </div>
-      <p>Then, click on <button id="run-btn" class="btn btn-primary" ><i class="bi bi-play-circle-fill"></i> RUN</button></p>
+      <p>You can clear the graph at any time with <button id="reset-btn" class="btn btn-secondary" ><i class="bi bi-bootstrap-reboot"></i> RESET</button></p>
 
       <h2 class="mt-5">See the result</h2>
       <p>See the evolution of the initial number below. Each iteration of the algorithm is visible as a dot.</p>

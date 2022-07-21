@@ -18,12 +18,15 @@ class ChartController {
 
         this.config = {
             type: 'line',
+            scales: {
+
+            },
             data: {
                 labels: this.labels,
                 datasets: [{
-                    label: 'Last run',
+                    label: 'Collatz suite for initial value',
                     data: this.data,
-                    fill: true,
+                    fill: false,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1
                 }]
@@ -37,6 +40,18 @@ class ChartController {
         this.chart = new Chart(ctx, this.config);
     }
 
+    reset() {
+        this.clear();
+        this.chart.update();
+        log.message('Chart cleared')
+    }
+
+    clear() {
+        this.chart.clear();
+        this.data.splice(0, this.data.length -1);
+        this.labels.splice(0, this.labels.length -1)
+    }
+
     update( data ) {
         log.message('Updating chart ...')
         if( !data ) 
@@ -48,12 +63,12 @@ class ChartController {
             log.error('data must be an Array!')
         }
 
-        this.data.splice(0, this.data.length -1);
-        this.data.push(...data);
-        this.labels.splice(0, this.labels.length -1)
+        this.clear();
 
+        this.data.push(...data);
+        
         this.data.forEach( (val, idx) => {
-            this.labels.push(idx);
+            this.labels.push(`iteration ${idx}`);
         })
 
         this.chart.update();
@@ -73,10 +88,28 @@ class App {
     start() {
         log.message(`App starting ...`);
 
+        const resetBtn = document.getElementById('reset-btn');
         const runBtn = document.getElementById('run-btn');
+        const initInput = document.getElementById('init-input');
+
         runBtn.addEventListener( 'click', () => {
             log.message(`Run button clicked`);
-            this.runAlgorithm();
+
+            const initNum = Number(initInput.value);
+            if( !Number.isInteger(initNum) && initNum !== 0     ) {
+                // TODO: display a message to the user
+                log.message('Initial number must be a non null integer!')
+                return;
+            }
+
+            this.runAlgorithm( initNum );
+        });
+
+        resetBtn.addEventListener( 'click', () => {
+            log.message(`Reset button clicked`);
+
+            initInput.value = null;
+            this.chartController.reset();
         });
 
         this.chartController = new ChartController(`chart`)
@@ -85,8 +118,29 @@ class App {
         log.message(`App started`);
     }
 
-    runAlgorithm() {
-        const data = [10, 5, 16, 8, 4, 2, 1, 4, 2, 1];
+    runAlgorithm( init ) {
+        const data = [init];
+        let should_stop = false;
+        while( !should_stop )
+        {
+            const curr = data[data.length-1]; 
+            log.message(`Run algorithm for ${curr}`)
+               
+            if( curr % 2 === 0)
+            {
+                data.push(curr / 2);
+            }
+            else
+            {
+                data.push(curr * 3 + 1);
+            }
+            
+
+            if( curr === 1 || curr === 0 ){
+                should_stop = true;
+            }
+        }
+
         this.chartController.update(data);
     }
 
