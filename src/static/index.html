@@ -3,28 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Collatz conjecture visualizer | by Berdal84</title>
+    <title>Collatz visualizer | by Berdal84</title>
   </head>
   <body>
     <script src="./main.js"></script>
 
-    <div class="container w-50 py-4 px-3 mx-auto">
-      <h1 class="mb-5">Welcome to Collatz conjectuer visualizer!</h1>
+    <div class="container w-50 p-4">
+      <h1 class="mb-3">Welcome to the Collatz visualizer!</h1>
       <p>In here, you can visualize the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a>.</p>
 
       <h2 class="mt-3">Setup and run the algorithm</h2>
-      <p>First, enter an initial number to start the algorithm with.</p>
+      <p>First, enter an initial number to start the algorithm with, then click on RUN.</p>
       <div class="input-group w-50 mb-3">
           <span class="input-group-text" id="basic-addon1">Initial value</span>
           <input id="init-input" type="text" class="form-control" placeholder="enter a integer value here"
                  aria-label="InitialNumber" aria-describedby="basic-addon1">
           <button id="run-btn" class="btn btn-primary" ><i class="bi bi-play-circle-fill"></i> RUN</button>
       </div>
-      <p>You can clear the graph at any time with <button id="reset-btn" class="btn btn-secondary" ><i class="bi bi-bootstrap-reboot"></i> RESET</button></p>
+      <p>Reset the UI at any time with <button id="reset-btn" class="btn btn-secondary" ><i class="bi bi-bootstrap-reboot"></i> RESET</button></p>
 
-      <h2 class="mt-5">See the result</h2>
+      <h2 class="mt-3">See the result</h2>
       <p>See the evolution of the initial number below. Each iteration of the algorithm is visible as a dot.</p>
       <canvas id="chart" class="w-100 h-50"></canvas>
+      <p class="mt-3 credits">Credits: This website has been created by <a href="https://dalle-cort.fr">Bérenger Dalle-Cort</a> using Bootstrap, Webpack, SASS and Chart.js</p>
     </div>
   </body>
 </html>

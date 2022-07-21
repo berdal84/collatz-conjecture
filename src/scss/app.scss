@@ -1,0 +1,33 @@
+
+:root {
+    font-family: monospace;
+}
+
+.container {
+    box-shadow: 0px 0px 50px rgb(0, 0, 0, 20%);
+    background-color: #fff;
+    border-radius: 0 0 20px 20px;
+    border-top: #97c7ff 10px solid;
+}
+
+body {
+    background-color: #eee;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: #333;
+}
+
+h2 {
+    border-left: 5px solid #9bc8fc;
+    padding-left: 5px;
+}
+
+.credits {
+    font-style: italic;
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}

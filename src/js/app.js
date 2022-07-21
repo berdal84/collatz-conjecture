@@ -19,12 +19,16 @@ class ChartController {
         this.config = {
             type: 'line',
             scales: {
-
+                y: {
+                    ticks: {
+                        stepSize: 1.0
+                    }
+                }
             },
             data: {
                 labels: this.labels,
                 datasets: [{
-                    label: 'Collatz suite for initial value',
+                    label: 'Collatz suite',
                     data: this.data,
                     fill: false,
                     borderColor: 'rgb(75, 192, 192)',
@@ -102,7 +106,9 @@ class App {
                 return;
             }
 
-            this.runAlgorithm( initNum );
+            this.chartController.clear();
+            const data = this.runAlgorithm( initNum );
+            this.chartController.update(data);
         });
 
         resetBtn.addEventListener( 'click', () => {
@@ -141,7 +147,7 @@ class App {
             }
         }
 
-        this.chartController.update(data);
+        return data;
     }
 
     stop() {
