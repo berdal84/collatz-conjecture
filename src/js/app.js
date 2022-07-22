@@ -129,7 +129,7 @@ class App {
             });
         }
         runBtn.addEventListener( 'click', onRunEvent );
-        initInput.addEventListener( 'keypress', ( event ) => { if(event.key === "Enter") onRunEvent(); } );
+        initInput.addEventListener( 'keyup', ( event ) => { if( event.key === 'Enter' ) onRunEvent(); } );
 
         resetBtn.addEventListener( 'click', () => {
             log.message(`Reset button clicked`);
@@ -156,21 +156,21 @@ class App {
             return undefined;
         }
 
-        const initAsNumber = Number(input);
-        if( !Number.isInteger(initAsNumber)) 
+        const inputAsNumber = Number(input);
+        if( !Number.isInteger(inputAsNumber)) 
         {
             this.showError('Initial number is not a an integer!')
             return undefined;
         }
         
-        if( initAsNumber <= 0 ) {
+        if( inputAsNumber <= 0 ) {
             this.showError('Initial number must be defined in ]0, inf]')
             return undefined;
         }
 
         log.message('running algorithm ...')
 
-        const data = [initAsNumber];
+        const data = [inputAsNumber];
         let should_stop = false;
         while( !should_stop )
         {
