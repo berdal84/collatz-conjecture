@@ -54,6 +54,7 @@ class ChartController {
         this.chart.clear();
         this.data.splice(0, this.data.length);
         this.labels.splice(0, this.labels.length);
+        this.config.data.datasets[0].label = '';
     }
 
     update( data ) {
@@ -79,6 +80,8 @@ class ChartController {
         {
             this.labels[0] = 'Initial value';
         }
+
+        this.config.data.datasets[0].label = `Collatz suite for x=${this.data[0]}`;
 
         this.chart.update();
 
@@ -114,7 +117,7 @@ class App {
 
         this.clearError();
 
-        runBtn.addEventListener( 'click', () => {
+        const onRunEvent = () => {
             log.message(`Run button clicked`);
             this.clearError();
             this.chartController.clear();
@@ -124,7 +127,9 @@ class App {
                     this.chartController.update(data);
                 }
             });
-        });
+        }
+        runBtn.addEventListener( 'click', onRunEvent );
+        initInput.addEventListener( 'keypress', ( event ) => { if(event.key === "Enter") onRunEvent(); } );
 
         resetBtn.addEventListener( 'click', () => {
             log.message(`Reset button clicked`);
