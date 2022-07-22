@@ -1,13 +1,14 @@
 
 :root {
     font-family: monospace;
+    --color-primary: #97c7ff;
 }
 
 .container {
     box-shadow: 0px 0px 50px rgb(0, 0, 0, 20%);
     background-color: #fff;
     border-radius: 0 0 20px 20px;
-    border-top: #97c7ff 10px solid;
+    border-top: var(--color-primary) 10px solid;
 }
 
 body {
@@ -19,7 +20,7 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
-    border-left: 5px solid #9bc8fc;
+    border-left: 5px solid var(--color-primary);
     padding-left: 5px;
 }
 

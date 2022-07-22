@@ -31,8 +31,8 @@ class ChartController {
                     label: 'Collatz suite',
                     data: this.data,
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'orange',
+                    tension: 0
                 }]
             },
         };
@@ -100,15 +100,11 @@ class App {
             log.message(`Run button clicked`);
 
             const initNum = Number(initInput.value);
-            if( !Number.isInteger(initNum) && initNum !== 0     ) {
-                // TODO: display a message to the user
-                log.message('Initial number must be a non null integer!')
-                return;
-            }
-
             this.chartController.clear();
             const data = this.runAlgorithm( initNum );
-            this.chartController.update(data);
+            if( data ) {
+                this.chartController.update(data);
+            }
         });
 
         resetBtn.addEventListener( 'click', () => {
@@ -125,25 +121,33 @@ class App {
     }
 
     runAlgorithm( init ) {
+
+        if( !Number.isInteger(init) || Number.isNaN(init) || init <= 0 ) {
+            // TODO: display a message to the user
+            log.message('Initial number must be a positive non null integer!')
+            return undefined;
+        }
+
         const data = [init];
         let should_stop = false;
         while( !should_stop )
         {
             const curr = data[data.length-1]; 
             log.message(`Run algorithm for ${curr}`)
-               
-            if( curr % 2 === 0)
-            {
-                data.push(curr / 2);
+
+            if( curr === 1 ){
+                should_stop = true;
             }
             else
             {
-                data.push(curr * 3 + 1);
-            }
-            
-
-            if( curr === 1 || curr === 0 ){
-                should_stop = true;
+                if( curr % 2 === 0)
+                {
+                    data.push(curr / 2);
+                }
+                else
+                {
+                    data.push(curr * 3 + 1);
+                }
             }
         }
 
