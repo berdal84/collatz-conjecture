@@ -75,6 +75,11 @@ class ChartController {
             this.labels.push(`iteration ${idx}`);
         })
 
+        if( this.labels.length > 0 )
+        {
+            this.labels[0] = 'Initial value';
+        }
+
         this.chart.update();
 
         log.message('Chart updated')
