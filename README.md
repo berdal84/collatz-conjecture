@@ -12,4 +12,4 @@ The app is published [here](http://collatz-visualizer.dalle-cort.fr)
 
 ## Development
 
-I followed the instructions [here](https://getbootstrap.com/docs/5.2/getting-started/webpack/) to set up my project.
+I followed the instructions [here](https://getbootstrap.com/docs/5.2/getting-started/webpack/) to set up my project. I am using Bootstrap, Webpack, SASS and Chartjs.
