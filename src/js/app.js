@@ -94,6 +94,17 @@ class App {
         log.message(`New App instance`);
     }
 
+    showError( text ) {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.style.display = 'block';
+        errorMessage.innerText = `There is a problem: ${text}`;
+    }
+
+    clearError() {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.style.display = 'none';
+    }
+
     start() {
         log.message(`App starting ...`);
 
@@ -101,15 +112,18 @@ class App {
         const runBtn = document.getElementById('run-btn');
         const initInput = document.getElementById('init-input');
 
+        this.clearError();
+
         runBtn.addEventListener( 'click', () => {
             log.message(`Run button clicked`);
-
-            const initNum = Number(initInput.value);
+            this.clearError();
             this.chartController.clear();
-            const data = this.runAlgorithm( initNum );
-            if( data ) {
-                this.chartController.update(data);
-            }
+            this.runAlgorithm( initInput.value )
+                .then( data => {
+                if( data ) {
+                    this.chartController.update(data);
+                }
+            });
         });
 
         resetBtn.addEventListener( 'click', () => {
@@ -125,15 +139,33 @@ class App {
         log.message(`App started`);
     }
 
-    runAlgorithm( init ) {
+    async runAlgorithm( input ) {
 
-        if( !Number.isInteger(init) || Number.isNaN(init) || init <= 0 ) {
-            // TODO: display a message to the user
-            log.message('Initial number must be a positive non null integer!')
+        if ( input.length === 0 ) {
+            this.showError('Initial number is required!')
             return undefined;
         }
 
-        const data = [init];
+        if ( Number.isNaN(input) ) {
+            this.showError('Initial number is not a number!')
+            return undefined;
+        }
+
+        const initAsNumber = Number(input);
+        if( !Number.isInteger(initAsNumber)) 
+        {
+            this.showError('Initial number is not a an integer!')
+            return undefined;
+        }
+        
+        if( initAsNumber <= 0 ) {
+            this.showError('Initial number must be defined in ]0, inf]')
+            return undefined;
+        }
+
+        log.message('running algorithm ...')
+
+        const data = [initAsNumber];
         let should_stop = false;
         while( !should_stop )
         {
@@ -156,6 +188,7 @@ class App {
             }
         }
 
+        log.message('algorithm finished')
         return data;
     }
 
