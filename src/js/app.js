@@ -52,8 +52,8 @@ class ChartController {
 
     clear() {
         this.chart.clear();
-        this.data.splice(0, this.data.length -1);
-        this.labels.splice(0, this.labels.length -1)
+        this.data.splice(0, this.data.length);
+        this.labels.splice(0, this.labels.length);
     }
 
     update( data ) {
