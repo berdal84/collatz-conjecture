@@ -12,9 +12,7 @@ The app is published [here](http://collatz-visualizer.dalle-cort.fr)
 
 ## Screenshot(s)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/942052/181290375-8c1e068c-48ff-4edd-8ecf-5ecac4aefcdc.png" />
-</p>
+<img src="https://user-images.githubusercontent.com/942052/181290375-8c1e068c-48ff-4edd-8ecf-5ecac4aefcdc.png" />
 
 ## Development
 
