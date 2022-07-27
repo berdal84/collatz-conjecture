@@ -1,15 +1,10 @@
 import '../scss/styles.scss'
 
-// Import all of Bootstrap's JS
+// Import all of Bootstrap's JS (TODO: import only the code required)
 const bootstrap = import('bootstrap');
 
-// Import app an run main loop
-document.addEventListener('DOMContentLoaded', (event) => {
-    import( './app.js')
-    .then( module => {
-        module.default.start()
-    })
-    .catch( reason => {
-        console.error('Unable to import app.js, reason:' + reason)
-    });
+// Import the main module once document content is loaded
+document.addEventListener('DOMContentLoaded', async (event) => {
+    const module = await import( './app.js' ) // webpack will catch if it fails at "compile" time
+    module.default.start()
 });
