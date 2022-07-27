@@ -1,14 +1,28 @@
 
-
+/**
+ * A log class utility
+ */
 class Log {
-    prefix = '[collatz-app]';
-    message(text) {
-        console.log(`${this.prefix} - ${text}`)
+
+    constructor(_prefix) {
+        this.prefix = _prefix
     }
+
+    /** Private */
+    _format(text) {
+        return `${this.prefix}${text}`
+    }
+
+    /** Print a message */
+    message(text) {
+        console.log(this._format(text))
+    }
+
+    /** Print an error */
     error(text) {
-        throw new Error(`${this.prefix} - ${text}`)
+        console.error(this._format(text))
     }
 }
-const log = new Log();
 
+const log = new Log(`[collatz-app] - `)
 export default log;
