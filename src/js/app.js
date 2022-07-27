@@ -30,7 +30,7 @@ export class App {
 
     constructor() {
         App.#instance_count++
-        log.message(`New App instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
+        log.message(`new instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
     }
 
     /**
@@ -55,7 +55,7 @@ export class App {
      * @return {boolean} true in case of success, false if there is an issue.
      */
     init() {
-        log.message(`App initializing ...`);
+        log.message(`initializing ...`);
 
         // create instances / get elements
         this.#chart = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
@@ -66,27 +66,27 @@ export class App {
 
         // check non null
         if( !this.#chart ){
-            log.error("Unable to initialize chartController!")
+            log.error("unable to initialize chartController!")
             return false
         }
 
         if( !this.#errorMsgEl ){
-            log.error("Unable to initialize errorMsgEl!")
+            log.error("unable to initialize errorMsgEl!")
             return false
         }
 
         if( !this.#resetBtnEl ) {
-            log.error("Unable to initialize resetBtnEl!")
+            log.error("unable to initialize resetBtnEl!")
             return false
         }
 
         if( !this.#runBtnEl ) {
-            log.error("Unable to initialize runBtnEl!")
+            log.error("unable to initialize runBtnEl!")
             return false
         }
 
         if( !this.#initInputEl ) {
-            log.error("Unable to initialize initInputEl!")
+            log.error("unable to initialize initInputEl!")
             return false;
         }
 
@@ -98,7 +98,9 @@ export class App {
 
         this.#clearError();
 
-        log.message(`App initialized`);
+        this.#initInputEl.focus()
+
+        log.message(`initialized`);
 
         return true
     }
@@ -108,7 +110,7 @@ export class App {
      * App must be initialized (@see init())
      */
     start() {
-        log.message(`App starting ...`);
+        log.message(`starting ...`);
 
         // Trigger a run when user clicks on "Run" button or press Enter while editing the initial number input.
         this.#runBtnEl.addEventListener( 'click', this.#onRun );
@@ -117,7 +119,7 @@ export class App {
         // Trigger a reset when user clicks on "Reset" button
         this.#resetBtnEl.addEventListener( 'click', this.#onReset );
 
-        log.message(`App started`);
+        log.message(`started`);
     }
 
     /**
@@ -179,7 +181,7 @@ export class App {
 
         // Run the algorithm (Syracuse function)
 
-        log.message('running algorithm ...')
+        log.message(`running algorithm with n=${inputAsNumber} ...`)
 
         const integer_suite = [inputAsNumber];
         let current_integer = inputAsNumber;
@@ -215,9 +217,10 @@ export class App {
 
             iteration_count++
         }
+        integer_suite.reverse()
+        log.message(`algorithm finished. \niteration_count: ${iteration_count}\ninteger_suite: ${ JSON.stringify(integer_suite)}`)
 
-        log.message('algorithm finished')
-        return integer_suite.reverse();
+        return integer_suite;
     }
 
 }
