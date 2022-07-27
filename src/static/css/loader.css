@@ -1,0 +1,24 @@
+
+/*
+The style for the loader is separated from the rest, because it needs to be loaded fast at the very beginning.
+*/
+
+#loading-overlay {
+    position: fixed;
+    z-index: 255;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+#loading-spinner {
+    margin-bottom: 20px;
+}
+
+#loading-message {
+    margin: 0;
+}

@@ -1,44 +1,59 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Collatz visualizer | by Berdal84</title>
-  </head>
-  <body>
-    <div class="container p-4">
 
-      <!-- Introduction -->
-      <h1 class="mb-3">Welcome to the Collatz visualizer!</h1>
-      <p>In here, you can visualize a Collatz sequence using the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture#Syracuse_function">Syracuse function</a>.</p>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collatz visualizer | by Berdal84</title>
+  <link rel="stylesheet" href="css/loader.css" />
+</head>
 
-      <!-- Setup and run the algorithm -->
-      <h2 class="mt-3">Setup and run the algorithm</h2>
-      <p>First, enter an initial value <i>x</i>, then press <i>Enter</i> or click on <i>RUN</i> to start the algorithm.</p>
+<body>
+  <!-- Loading overlay, displayed on top before app is loaded -->
+  <div id="loading-overlay">
+    <div id="loading-spinner" class="spinner-border text-info" role="status"></div>
+    <p id="loading-message"><!-- dynamically updated message here--></p>
+  </div>
 
-      <div class="input-group mb-3">
+  <!-- Main container -->
+  <div class="container p-4">
 
-          <!-- Initial value input -->
-          <span class="input-group-text" id="basic-addon1">Initial value x</span>
-          <input id="init-input" type="text" class="form-control" placeholder="enter a integer value here"
-                 aria-label="InitialNumber" aria-describedby="basic-addon1">
-          <button id="run-btn" class="btn btn-primary" ><i class="bi bi-play-circle-fill"></i> RUN</button>
-      </div>
+    <!-- Introduction -->
+    <h1 class="mb-3">Welcome to the Collatz visualizer!</h1>
+    <p>In here, you can visualize a Collatz sequence using the <a
+        href="https://en.wikipedia.org/wiki/Collatz_conjecture#Syracuse_function">Syracuse function</a>.</p>
 
-      <div id="error-message" class="alert alert-danger " role="alert"></div>
+    <!-- Setup and run the algorithm -->
+    <h2 class="mt-3">Setup and run the algorithm</h2>
+    <p>First, enter an initial value <i>x</i>, then press <i>Enter</i> or click on <i>RUN</i> to start the algorithm.
+    </p>
 
-      <!-- Button to reset -->
-      <p>Reset the UI at any time with <button id="reset-btn" class="btn btn-secondary" ><i class="bi bi-bootstrap-reboot"></i> RESET</button></p>
+    <div class="input-group mb-3">
 
-      <!-- Algorithm result displayed as a chart -->
-      <h2 class="mt-3">See the result</h2>
-      <p>See the evolution of the initial number below. Each iteration of the algorithm is visible as a dot.</p>
-      <canvas id="chart" class="w-100 h-50"></canvas>
+      <!-- Initial value input -->
+      <span class="input-group-text" id="basic-addon1">Initial value x</span>
+      <input id="init-input" type="text" class="form-control" placeholder="enter a integer value here"
+        aria-label="InitialNumber" aria-describedby="basic-addon1">
+      <button id="run-btn" class="btn btn-primary"><i class="bi bi-play-circle-fill"></i> RUN</button>
+    </div>
 
-      <!-- Credits -->
-      <p class="mt-3 credits">Credits: This website has been created by <a href="https://dalle-cort.fr">Bérenger Dalle-Cort</a> using Bootstrap, Webpack, SASS and Chart.js</p>
+    <div id="error-message" class="alert alert-danger " role="alert"></div>
 
-    </div><!-- /container -->
+    <!-- Button to reset -->
+    <p>Reset the UI at any time with <button id="reset-btn" class="btn btn-secondary"><i
+          class="bi bi-bootstrap-reboot"></i> RESET</button></p>
 
-  </body>
+    <!-- Algorithm result displayed as a chart -->
+    <h2 class="mt-3">See the result</h2>
+    <p>See the evolution of the initial number below. Each iteration of the algorithm is visible as a dot.</p>
+    <canvas id="chart" class="w-100 h-50"></canvas>
+
+    <!-- Credits -->
+    <p class="mt-3 credits">Credits: This website has been created by <a href="https://dalle-cort.fr">Bérenger
+        Dalle-Cort</a> using Bootstrap, Webpack, SASS and Chart.js</p>
+
+  </div><!-- /container -->
+
+</body>
+
 </html>
