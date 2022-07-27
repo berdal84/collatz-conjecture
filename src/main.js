@@ -1,5 +1,5 @@
 
-import { Loader } from './loader.js'
+import { Loader } from './js/loader'
 
 // Import the main module once document content is loaded
 document.addEventListener('DOMContentLoaded', async () => {
@@ -8,12 +8,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     loader.init()
 
     loader.show("Loading dependencies...")
-    await Promise.all([
-        import( '../scss/styles.scss' ),
-        import('bootstrap') ]);
+    await import( './scss/styles.scss' ) // needs to be loaded fully before to load bootstrap
+    await import('bootstrap');
 
     loader.updateMessage("Loading application ...")
-    const module = await import( './app.js' )   
+    const module = await import( './js/app' )   
     const app = new module.App()
     if( !app.init() ) {
         loader.updateMessage("Unable to initialize app! Check the console for more details.");
