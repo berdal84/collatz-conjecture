@@ -1,17 +1,29 @@
 
 import { Log } from './log';
-import { ChartController } from './chart-controller';
+import { IChartBridge, ChartBridge, ChartBridgeType } from './chart-bridge';
 import { CollatzMath } from './collatz-math';
 
 export class App {
 
+    /** @type {number} count instances, to ensure we have only one at a time while avoiding singleton pattern. */
     static #instance_count = 0
 
+    /** @type {number} some random number to identify this app */
     #uid               = Math.floor( Math.random() * 100000 + (new Date()).getMilliseconds())
+
+    /** @type {IChartBridge} the char bridge instance (to control a chart implem)*/
     #chartController   = null
+
+    /** @type {HTMLElement} the error message element */
     #errorMsgEl        = null
+
+    /** @type {HTMLButtonElement} the reset button element*/
     #resetBtnEl        = null
+
+    /** @type {HTMLButtonElement} the run button element */
     #runBtnEl          = null
+
+    /** @type {HTMLInputElement} */
     #initInputEl       = null
 
     constructor() {
@@ -19,11 +31,18 @@ export class App {
         Log.message(`New App instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
     }
 
+    /**
+     * Display an error message
+     * @param {string} text 
+     */
     #showError( text ) {
         this.#errorMsgEl.style.display = 'block';
         this.#errorMsgEl.innerText     = `There is a problem: ${text}`;
     }
 
+    /**
+     * Clear the - last - error message
+     */
     #clearError() {
         this.#errorMsgEl.style.display = 'none';
     }
@@ -36,7 +55,7 @@ export class App {
         Log.message(`App initializing ...`);
 
         // create instances / get elements
-        this.#chartController = new ChartController(`chart`)
+        this.#chartController = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
         this.#errorMsgEl  = document.getElementById('error-message');
         this.#resetBtnEl  = document.getElementById('reset-btn');
         this.#runBtnEl    = document.getElementById('run-btn');
@@ -50,7 +69,7 @@ export class App {
         if( !this.#initInputEl )     Log.error("Unable to initialize initInputEl!")
 
         // initialize
-        this.#chartController.init();
+        this.#chartController.init("chart");
         this.#clearError();
 
         Log.message(`App initialized`);
@@ -88,7 +107,7 @@ export class App {
     #onRun = () => {
         Log.message(`onRun() triggered`);
         this.#clearError();
-        this.#chartController.clear();
+        this.#chartController.reset();
         this.#runAlgorithm( this.#initInputEl.value )
             .then( integers => {
             if( integers ) {
@@ -141,7 +160,7 @@ export class App {
         while( !should_stop )
         {
             // avoid possible infinite loops while dev, limit is arbitrary
-            if( iteration_count > 10000 ) {
+            if( iteration_count > 1000 ) {
                 alert(`The iteration count for this run exceeded ${iteration_count}! Algorithm is stopped to avoid an infinite loop.`)
                 should_stop = true
             }
