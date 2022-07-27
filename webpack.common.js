@@ -8,12 +8,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
-  devServer: {
-    static: path.resolve(__dirname, 'src/static'),
-    port: 8080,
-    hot: true
-  },
-  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'My App',
