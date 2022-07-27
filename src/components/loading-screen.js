@@ -27,6 +27,8 @@ export class LoadingScreen extends HTMLElement {
         this.setAttribute("transition-duration",  500)
         this.setAttribute("show", true)
         this.setAttribute("message", "Loading ...")
+
+        this.style.pointerEvents  = "none"
     }
 
     attributeChangedCallback( name, oldValue, newValue ) {
@@ -36,6 +38,9 @@ export class LoadingScreen extends HTMLElement {
                 if ( newValue === "true" ) {
                     this.style.opacity = 1;
                     document.body.style.visibility = "visible"
+                    this.visibility = "visible"
+                    this.style.pointerEvents  = "auto"
+
                 } else {
                     // prepare a smooth opacity transition
                     this.style.opacity = 0;
@@ -44,11 +49,15 @@ export class LoadingScreen extends HTMLElement {
                     const delay    = this.getAttribute("transition-delay")
                     const duration = this.getAttribute("transition-duration")
 
+
                     this.style.transitionDelay    = `${delay/1000}s`;
                     this.style.transitionDuration = `${duration/1000}s`;
                     
+
                     // hide when finished
-                    setTimeout(() => { this.style.visibility = "hidden" }, delay + duration)
+                    setTimeout(() => {
+                        this.style.pointerEvents  = "none"
+                    }, delay + duration)
                 }
                 break;
 
