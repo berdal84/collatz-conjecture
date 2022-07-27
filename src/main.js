@@ -1,10 +1,10 @@
 
-import { Loader } from './js/loader'
+import { LoadingScreen } from './js/loading-screen'
 
 // Import the main module once document content is loaded
 document.addEventListener('DOMContentLoaded', async () => {
 
-    const loader = new Loader()
+    const loader = new LoadingScreen()
     loader.init()
 
     loader.show("Loading dependencies...")

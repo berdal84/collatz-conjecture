@@ -1,13 +1,13 @@
 
-import "../css/loader.css"
+import "../css/loading-screen.css"
 
-export class Loader {
+export class LoadingScreen {
 
     #overlayEl
     #messageEl
 
     constructor(){
-        this.#overlayEl = document.getElementById("loading-overlay")
+        this.#overlayEl = document.getElementById("loading-screen")
         this.#messageEl = document.getElementById("loading-message")
     }
 
