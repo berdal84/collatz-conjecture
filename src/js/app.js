@@ -1,160 +1,122 @@
 
-import log from './log.js';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { Log } from './log';
+import { ChartController } from './chart-controller';
+import { CollatzMath } from './collatz-math';
 
-class ChartController {
+export class App {
 
-    constructor( id ) {
+    static #instance_count = 0
 
-        if( !id ) {
-            log.error('An id must be passed to the controller!');
-        }
-        this.id = id;
-        this.chart = null;
-
-        this.data = [];
-        this.labels = [];
-
-        this.config = {
-            type: 'line',
-            scales: {
-                y: {
-                    ticks: {
-                        stepSize: 1.0
-                    }
-                }
-            },
-            data: {
-                labels: this.labels,
-                datasets: [{
-                    label: 'Collatz suite',
-                    data: this.data,
-                    fill: false,
-                    borderColor: 'orange',
-                    tension: 0
-                }]
-            },
-        };
-    }
-
-    init() {
-        log.message('Initialising chart ...')
-        const ctx = document.getElementById(this.id);
-        this.chart = new Chart(ctx, this.config);
-    }
-
-    reset() {
-        this.clear();
-        this.chart.update();
-        log.message('Chart cleared')
-    }
-
-    clear() {
-        this.chart.clear();
-        this.data.splice(0, this.data.length);
-        this.labels.splice(0, this.labels.length);
-        this.config.data.datasets[0].label = '';
-    }
-
-    update( data ) {
-        log.message('Updating chart ...')
-        if( !data ) 
-        {
-            log.error('data must be set!')
-        }
-        else if( !(data instanceof Array) ) 
-        {
-            log.error('data must be an Array!')
-        }
-
-        this.clear();
-
-        this.data.push(...data);
-        
-        this.data.forEach( (val, idx) => {
-            this.labels.push(`iteration ${idx}`);
-        })
-
-        if( this.labels.length > 0 )
-        {
-            this.labels[0] = 'Initial value';
-        }
-
-        this.config.data.datasets[0].label = `Collatz suite for x=${this.data[0]}`;
-
-        this.chart.update();
-
-        log.message('Chart updated')
-    }
-}
-
-class App {
-
-    chartController = null;
+    #uid               = Math.floor( Math.random() * 100000 + (new Date()).getMilliseconds())
+    #chartController   = null
+    #errorMsgEl        = null
+    #resetBtnEl        = null
+    #runBtnEl          = null
+    #initInputEl       = null
 
     constructor() {
-        log.message(`New App instance`);
+        App.#instance_count++
+        Log.message(`New App instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
     }
 
-    showError( text ) {
-        const errorMessage = document.getElementById('error-message');
-        errorMessage.style.display = 'block';
-        errorMessage.innerText = `There is a problem: ${text}`;
+    #showError( text ) {
+        this.#errorMsgEl.style.display = 'block';
+        this.#errorMsgEl.innerText     = `There is a problem: ${text}`;
     }
 
-    clearError() {
-        const errorMessage = document.getElementById('error-message');
-        errorMessage.style.display = 'none';
+    #clearError() {
+        this.#errorMsgEl.style.display = 'none';
     }
 
+    /**
+     * Initialize the application.
+     * Must be called before start()
+     */
+    init() {
+        Log.message(`App initializing ...`);
+
+        // create instances / get elements
+        this.#chartController = new ChartController(`chart`)
+        this.#errorMsgEl  = document.getElementById('error-message');
+        this.#resetBtnEl  = document.getElementById('reset-btn');
+        this.#runBtnEl    = document.getElementById('run-btn');
+        this.#initInputEl = document.getElementById('init-input');
+
+        // check non null
+        if( !this.#chartController ) Log.error("Unable to initialize chartController!")
+        if( !this.#errorMsgEl )      Log.error("Unable to initialize errorMsgEl!")
+        if( !this.#resetBtnEl )      Log.error("Unable to initialize resetBtnEl!")
+        if( !this.#runBtnEl )        Log.error("Unable to initialize runBtnEl!")
+        if( !this.#initInputEl )     Log.error("Unable to initialize initInputEl!")
+
+        // initialize
+        this.#chartController.init();
+        this.#clearError();
+
+        Log.message(`App initialized`);
+    }
+
+    /**
+     * Start the application.
+     * App must be initialized (@see init())
+     */
     start() {
-        log.message(`App starting ...`);
+        Log.message(`App starting ...`);
 
-        const resetBtn = document.getElementById('reset-btn');
-        const runBtn = document.getElementById('run-btn');
-        const initInput = document.getElementById('init-input');
+        // Trigger a run when user clicks on "Run" button or press Enter while editing the initial number input.
+        this.#runBtnEl.addEventListener( 'click', this.#onRun );
+        this.#initInputEl.addEventListener( 'keyup', ( event ) => { if( event.key === 'Enter' ) this.#onRun(); } );
+        
+        // Trigger a reset when user clicks on "Reset" button
+        this.#resetBtnEl.addEventListener( 'click', this.#onReset );
 
-        this.clearError();
-
-        const onRunEvent = () => {
-            log.message(`Run button clicked`);
-            this.clearError();
-            this.chartController.clear();
-            this.runAlgorithm( initInput.value )
-                .then( data => {
-                if( data ) {
-                    this.chartController.update(data);
-                }
-            });
-        }
-        runBtn.addEventListener( 'click', onRunEvent );
-        initInput.addEventListener( 'keyup', ( event ) => { if( event.key === 'Enter' ) onRunEvent(); } );
-
-        resetBtn.addEventListener( 'click', () => {
-            log.message(`Reset button clicked`);
-
-            initInput.value = null;
-            this.chartController.reset();
-        });
-
-        this.chartController = new ChartController(`chart`)
-        this.chartController.init();
-
-        log.message(`App started`);
+        Log.message(`App started`);
     }
 
-    async runAlgorithm( input ) {
+    /**
+     * Function triggered when user wants to reset the form
+     */
+    #onReset = () => {
+        Log.message(`onReset() triggered`);
+        this.#initInputEl.value = null;
+        this.#chartController.reset();
+    }
+
+     /**
+     * Function triggered when use wants to run the algorithm
+     */
+    #onRun = () => {
+        Log.message(`onRun() triggered`);
+        this.#clearError();
+        this.#chartController.clear();
+        this.#runAlgorithm( this.#initInputEl.value )
+            .then( integers => {
+            if( integers ) {
+                this.#chartController.update(integers);
+            }
+        });
+    }
+
+    /**
+     * Run the syracuze function recursively (actually in a loop here) and return the suite as an array of integers.
+     * @param {string} input must be the input of the user (in a string) but should be convertible to a non null positive integer
+     * @returns {Array<number>} a suite of non null positive integers
+     */
+    async #runAlgorithm( input ) {
+
+        // Check if the string is valid
 
         if ( input.length === 0 ) {
-            this.showError('Initial number is required!')
+            this.#showError('Initial number is required!')
             return undefined;
         }
 
         if ( Number.isNaN(input) ) {
-            this.showError('Initial number is not a number!')
+            this.#showError('Initial number is not a number!')
             return undefined;
         }
+
+        // Check if the string as number is valid
 
         const inputAsNumber = Number(input);
         if( !Number.isInteger(inputAsNumber)) 
@@ -164,43 +126,51 @@ class App {
         }
         
         if( inputAsNumber <= 0 ) {
-            this.showError('Initial number must be defined in ]0, inf]')
+            this.#showError('Initial number must be defined in ]0, inf]')
             return undefined;
         }
 
-        log.message('running algorithm ...')
+        // Run the algorithm (Syracuse function)
 
-        const data = [inputAsNumber];
-        let should_stop = false;
+        Log.message('running algorithm ...')
+
+        const integer_suite = [inputAsNumber];
+        let current_integer = inputAsNumber;
+        let  should_stop = false;
+        let iteration_count   = 0
         while( !should_stop )
         {
-            const curr = data[data.length-1]; 
-            log.message(`Run algorithm for ${curr}`)
+            // avoid possible infinite loops while dev, limit is arbitrary
+            if( iteration_count > 10000 ) {
+                alert(`The iteration count for this run exceeded ${iteration_count}! Algorithm is stopped to avoid an infinite loop.`)
+                should_stop = true
+            }
 
-            if( curr === 1 ){
+            /*
+             * 1 is the smallest valid value, we choose to stop here because running from 1 always loop.
+             * 1 => 4 => 2 => 1 => 4
+             */
+            if( current_integer === 1 )
+            {
                 should_stop = true;
             }
             else
             {
-                if( curr % 2 === 0)
-                {
-                    data.push(curr / 2);
+                const next_integer = CollatzMath.syracuse(current_integer)
+                if( next_integer === undefined ) {
+                    Log.error(`Syracuse returned an undefined result!`)
+                    should_stop = true
+                } else {
+                    integer_suite.unshift(next_integer)
                 }
-                else
-                {
-                    data.push(curr * 3 + 1);
-                }
+                current_integer = next_integer
             }
+
+            iteration_count++
         }
 
-        log.message('algorithm finished')
-        return data;
-    }
-
-    stop() {
-
+        Log.message('algorithm finished')
+        return integer_suite.reverse();
     }
 
 }
-const app = new App();
-export default app;

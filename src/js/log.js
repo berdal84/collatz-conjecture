@@ -2,27 +2,22 @@
 /**
  * A log class utility
  */
-class Log {
+export class Log {
 
-    constructor(_prefix) {
-        this.prefix = _prefix
-    }
+    static #prefix = `[collatz-app] - `
 
     /** Private */
-    _format(text) {
-        return `${this.prefix}${text}`
+    static #format(text) {
+        return `${this.#prefix}${text}`
     }
 
     /** Print a message */
-    message(text) {
-        console.log(this._format(text))
+    static message(text) {
+        console.log(this.#format(text))
     }
 
     /** Print an error */
-    error(text) {
-        console.error(this._format(text))
+    static error(text) {
+        console.error(this.#format(text))
     }
 }
-
-const log = new Log(`[collatz-app] - `)
-export default log;
