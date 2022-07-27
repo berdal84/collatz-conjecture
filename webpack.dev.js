@@ -4,7 +4,7 @@ const path = require('path')
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   devServer: {
     static: path.resolve(__dirname, 'src/static'),
     port: 8080,
