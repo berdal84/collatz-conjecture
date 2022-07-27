@@ -3,7 +3,7 @@
 The style for the loader is separated from the rest, because it needs to be loaded fast at the very beginning.
 */
 
-#loading-overlay {
+loading-screen {
     position: fixed;
     z-index: 255;
     width: 100vw;
