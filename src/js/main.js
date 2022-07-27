@@ -1,4 +1,6 @@
 
+// TODO: add a loader to hide unloaded view
+
 // Import the main module once document content is loaded
 document.addEventListener('DOMContentLoaded', async (event) => {
     await import( '../scss/styles.scss' )
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
             return
         }
         app.start()
+        // TODO: add a loader to hide when app is started
     });
 
 }, { once: true });

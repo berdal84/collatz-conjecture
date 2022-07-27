@@ -3,6 +3,7 @@ import { Log } from './log'
 import { Chart, registerables } from 'chart.js'; // import all registerables, TODO: pick only what is necessary
 Chart.register(...registerables); 
 
+const log = new Log("ChartBridge")
 
 export class IChartBridge {
     /**
@@ -37,10 +38,10 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
     #config
 
     init( canvas_id ) {
-        Log.message('Initialising chart ...')
+        log.message('Initialising chart ...')
 
         if( !canvas_id ) {
-            Log.error('An id must be passed to the controller!');
+            log.error('An id must be passed to the controller!');
             return false;
         }
         this.#canvas_id = canvas_id;
@@ -73,7 +74,7 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
         const ctx = document.getElementById(this.#canvas_id);
 
         if( !ctx ) {
-            Log.error(`Unable to get the canvas ${this.#canvas_id}` );
+            log.error(`Unable to get the canvas ${this.#canvas_id}` );
             return false;
         }
 
@@ -85,7 +86,7 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
     reset() {
         this.#clear();
         this.#chart.update();
-        Log.message('Chart cleared')
+        log.message('Chart cleared')
     }
 
     #clear() {
@@ -96,14 +97,14 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
     }
 
     update( data ) {
-        Log.message('Updating chart ...')
+        log.message('Updating chart ...')
         if( !data ) 
         {
-            Log.error('data must be set!')
+            log.error('data must be set!')
         }
         else if( !(data instanceof Array) ) 
         {
-            Log.error('data must be an Array!')
+            log.error('data must be an Array!')
         }
 
         this.#clear();
@@ -123,7 +124,7 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
 
         this.#chart.update();
 
-        Log.message('Chart updated')
+        log.message('Chart updated')
     }
 }
 
@@ -142,7 +143,7 @@ export class ChartBridge {
             case ChartBridgeType.CHARTJS:
                 return new ChartBridge_ChartJSImplem();
             default:
-                Log.error(`Unexisting type. Check ChartBridgeType`)
+                log.error(`Unexisting type. Check ChartBridgeType`)
                 return undefined
         }
     }

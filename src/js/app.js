@@ -3,6 +3,8 @@ import { Log } from './log';
 import { IChartBridge, ChartBridge, ChartBridgeType } from './chart-bridge';
 import { CollatzMath } from './collatz-math';
 
+const log = new Log("App")
+
 export class App {
 
     /** @type {number} count instances, to ensure we have only one at a time while avoiding singleton pattern. */
@@ -28,7 +30,7 @@ export class App {
 
     constructor() {
         App.#instance_count++
-        Log.message(`New App instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
+        log.message(`New App instance (uid: ${this.#uid}, instance_count: ${App.#instance_count})`);
     }
 
     /**
@@ -53,7 +55,7 @@ export class App {
      * @return {boolean} true in case of success, false if there is an issue.
      */
     init() {
-        Log.message(`App initializing ...`);
+        log.message(`App initializing ...`);
 
         // create instances / get elements
         this.#chart = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
@@ -64,39 +66,39 @@ export class App {
 
         // check non null
         if( !this.#chart ){
-            Log.error("Unable to initialize chartController!")
+            log.error("Unable to initialize chartController!")
             return false
         }
 
         if( !this.#errorMsgEl ){
-            Log.error("Unable to initialize errorMsgEl!")
+            log.error("Unable to initialize errorMsgEl!")
             return false
         }
 
         if( !this.#resetBtnEl ) {
-            Log.error("Unable to initialize resetBtnEl!")
+            log.error("Unable to initialize resetBtnEl!")
             return false
         }
 
         if( !this.#runBtnEl ) {
-            Log.error("Unable to initialize runBtnEl!")
+            log.error("Unable to initialize runBtnEl!")
             return false
         }
 
         if( !this.#initInputEl ) {
-            Log.error("Unable to initialize initInputEl!")
+            log.error("Unable to initialize initInputEl!")
             return false;
         }
 
         // initialize
         if( !this.#chart.init("chart")){
-            Log.error("Unable to initialize the chart bridge!")
+            log.error("Unable to initialize the chart bridge!")
             return false
         }
 
         this.#clearError();
 
-        Log.message(`App initialized`);
+        log.message(`App initialized`);
 
         return true
     }
@@ -106,7 +108,7 @@ export class App {
      * App must be initialized (@see init())
      */
     start() {
-        Log.message(`App starting ...`);
+        log.message(`App starting ...`);
 
         // Trigger a run when user clicks on "Run" button or press Enter while editing the initial number input.
         this.#runBtnEl.addEventListener( 'click', this.#onRun );
@@ -115,14 +117,14 @@ export class App {
         // Trigger a reset when user clicks on "Reset" button
         this.#resetBtnEl.addEventListener( 'click', this.#onReset );
 
-        Log.message(`App started`);
+        log.message(`App started`);
     }
 
     /**
      * Function triggered when user wants to reset the form
      */
     #onReset = () => {
-        Log.message(`onReset() triggered`);
+        log.message(`onReset() triggered`);
         this.#initInputEl.value = null;
         this.#chart.reset();
     }
@@ -131,7 +133,7 @@ export class App {
      * Function triggered when use wants to run the algorithm
      */
     #onRun = () => {
-        Log.message(`onRun() triggered`);
+        log.message(`onRun() triggered`);
         this.#clearError();
         this.#chart.reset();
         this.#runAlgorithm( this.#initInputEl.value )
@@ -177,7 +179,7 @@ export class App {
 
         // Run the algorithm (Syracuse function)
 
-        Log.message('running algorithm ...')
+        log.message('running algorithm ...')
 
         const integer_suite = [inputAsNumber];
         let current_integer = inputAsNumber;
@@ -203,7 +205,7 @@ export class App {
             {
                 const next_integer = CollatzMath.syracuse(current_integer)
                 if( next_integer === undefined ) {
-                    Log.error(`Syracuse returned an undefined result!`)
+                    log.error(`Syracuse returned an undefined result!`)
                     should_stop = true
                 } else {
                     integer_suite.unshift(next_integer)
@@ -214,7 +216,7 @@ export class App {
             iteration_count++
         }
 
-        Log.message('algorithm finished')
+        log.message('algorithm finished')
         return integer_suite.reverse();
     }
 

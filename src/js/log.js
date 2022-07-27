@@ -4,20 +4,25 @@
  */
 export class Log {
 
-    static #prefix = `[collatz-app] - `
+    #prefix = ""
+
+    constructor( prefix ) {
+        if( prefix !== undefined)
+            this.#prefix = `[${prefix}] - `
+    }
 
     /** Private */
-    static #format(text) {
+    #format(text) {
         return `${this.#prefix}${text}`
     }
 
     /** Print a message */
-    static message(text) {
+    message(text) {
         console.log(this.#format(text))
     }
 
     /** Print an error */
-    static error(text) {
+    error(text) {
         console.error(this.#format(text))
     }
 }
