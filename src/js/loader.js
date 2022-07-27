@@ -1,4 +1,6 @@
 
+import "../css/loader.css"
+
 export class Loader {
 
     #overlayEl

@@ -21,8 +21,15 @@ module.exports = {
       template: 'src/static/index.html'
     })
   ],
+  styles: {
+
+  },
   module: {
     rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
       {
         test: /\.(scss)$/,
         use: [
