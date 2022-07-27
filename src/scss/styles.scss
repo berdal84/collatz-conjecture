@@ -1,13 +1,4 @@
-
-
-$theme-colors: (
-    "primary": #b7d8ff,
-    "danger": #ff4136
-);
-
-// Import all of Bootstrap's CSS
+@import "theme.scss"; // imported first to override bootstrap theme
 @import "~bootstrap/scss/bootstrap";
-
 @import "bootstrap-icons/font/bootstrap-icons.css";
-
-@import "app.scss";
+@import "app.scss"; // imported after boostrap to override some values

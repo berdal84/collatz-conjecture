@@ -1,0 +1,14 @@
+
+/* Main variables */
+$font-family: monospace;
+$font-color: #333;
+$color-primary: #97c7ff;
+$color-danger: #ff4136;
+$bg-primary: white;
+$bg-secondary: #eee;
+
+// Override bootstrap's theme
+$theme-colors: (
+    "primary": $color-primary,
+    "danger": $color-danger
+);
