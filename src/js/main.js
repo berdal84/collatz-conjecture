@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     await import('bootstrap');
     import( './app.js' ).then( (module) => {
         const app = new module.App()
-        app.init()
+        if( !app.init() ) {
+            alert("Unable to initialize app! Check the console for more details.");
+            return
+        }
         app.start()
     });
 

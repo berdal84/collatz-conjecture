@@ -12,7 +12,7 @@ export class App {
     #uid               = Math.floor( Math.random() * 100000 + (new Date()).getMilliseconds())
 
     /** @type {IChartBridge} the char bridge instance (to control a chart implem)*/
-    #chartController   = null
+    #chart             = null
 
     /** @type {HTMLElement} the error message element */
     #errorMsgEl        = null
@@ -50,29 +50,55 @@ export class App {
     /**
      * Initialize the application.
      * Must be called before start()
+     * @return {boolean} true in case of success, false if there is an issue.
      */
     init() {
         Log.message(`App initializing ...`);
 
         // create instances / get elements
-        this.#chartController = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
+        this.#chart = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
         this.#errorMsgEl  = document.getElementById('error-message');
         this.#resetBtnEl  = document.getElementById('reset-btn');
         this.#runBtnEl    = document.getElementById('run-btn');
         this.#initInputEl = document.getElementById('init-input');
 
         // check non null
-        if( !this.#chartController ) Log.error("Unable to initialize chartController!")
-        if( !this.#errorMsgEl )      Log.error("Unable to initialize errorMsgEl!")
-        if( !this.#resetBtnEl )      Log.error("Unable to initialize resetBtnEl!")
-        if( !this.#runBtnEl )        Log.error("Unable to initialize runBtnEl!")
-        if( !this.#initInputEl )     Log.error("Unable to initialize initInputEl!")
+        if( !this.#chart ){
+            Log.error("Unable to initialize chartController!")
+            return false
+        }
+
+        if( !this.#errorMsgEl ){
+            Log.error("Unable to initialize errorMsgEl!")
+            return false
+        }
+
+        if( !this.#resetBtnEl ) {
+            Log.error("Unable to initialize resetBtnEl!")
+            return false
+        }
+
+        if( !this.#runBtnEl ) {
+            Log.error("Unable to initialize runBtnEl!")
+            return false
+        }
+
+        if( !this.#initInputEl ) {
+            Log.error("Unable to initialize initInputEl!")
+            return false;
+        }
 
         // initialize
-        this.#chartController.init("chart");
+        if( !this.#chart.init("chart")){
+            Log.error("Unable to initialize the chart bridge!")
+            return false
+        }
+
         this.#clearError();
 
         Log.message(`App initialized`);
+
+        return true
     }
 
     /**
@@ -98,7 +124,7 @@ export class App {
     #onReset = () => {
         Log.message(`onReset() triggered`);
         this.#initInputEl.value = null;
-        this.#chartController.reset();
+        this.#chart.reset();
     }
 
      /**
@@ -107,11 +133,11 @@ export class App {
     #onRun = () => {
         Log.message(`onRun() triggered`);
         this.#clearError();
-        this.#chartController.reset();
+        this.#chart.reset();
         this.#runAlgorithm( this.#initInputEl.value )
             .then( integers => {
             if( integers ) {
-                this.#chartController.update(integers);
+                this.#chart.update(integers);
             }
         });
     }
