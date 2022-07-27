@@ -21,9 +21,6 @@ module.exports = {
       template: 'src/static/index.html'
     })
   ],
-  styles: {
-
-  },
   module: {
     rules: [
       {
