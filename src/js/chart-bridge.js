@@ -31,12 +31,26 @@ export class IChartBridge {
  */
 class ChartBridge_ChartJSImplem extends IChartBridge {
 
+    /** @type {HTMLCanvasElement } */
     #canvas_id
+
+    /** chartjs @type {HTMLElement } */
     #chart
+
+    /** The data sent to the chart @type {Array<number> } */
     #data
+
+    /** The labels for the x axis (iterations) @type {Array<string> } */
     #labels
+
+    /** the chart configuration @type {Object} */
     #config
 
+    /**
+     * Initialize the instance
+     * @param {string} canvas_id 
+     * @returns 
+     */
     init( canvas_id ) {
         log.message('Initialising chart ...')
 
@@ -71,7 +85,7 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
             },
         };
 
-        const ctx = document.getElementById(this.#canvas_id);
+        const ctx = $(`#${this.#canvas_id}`);
 
         if( !ctx ) {
             log.error(`Unable to get the canvas ${this.#canvas_id}` );
@@ -83,19 +97,29 @@ class ChartBridge_ChartJSImplem extends IChartBridge {
         return true;
     }
 
+    /**
+     * Clear and update chart
+     */
     reset() {
         this.#clear();
         this.#chart.update();
         log.message('Chart cleared')
     }
 
+    /**
+     * Clear the chart and its data
+     */
     #clear() {
         this.#chart.clear();
         this.#data.splice(0, this.#data.length);
         this.#labels.splice(0, this.#labels.length);
-        this.#config.data.datasets[0].label = '∫';
+        this.#config.data.datasets[0].label = '';
     }
 
+    /**
+     * Update the chart with some data
+     * @param {Array<number>} data
+     */
     update( data ) {
         log.message('Updating chart ...')
         if( !data ) 

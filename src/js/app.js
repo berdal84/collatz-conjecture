@@ -114,7 +114,7 @@ export class App {
 
         // Trigger a run when user clicks on "Run" button or press Enter while editing the initial number input.
         this.#runBtnEl.click( this.#onRun );
-        this.#initInputEl.on( 'keyup', ( event ) => { if( event.key === 'Enter' ) this.#onRun(); } );
+        this.#initInputEl.keyup(( event ) => { if( event.key === 'Enter' ) this.#onRun(); } );
         
         // Trigger a reset when user clicks on "Reset" button
         this.#resetBtnEl.click( this.#onReset );
@@ -127,7 +127,7 @@ export class App {
      */
     #onReset = () => {
         log.message(`onReset() triggered`);
-        this.#initInputEl.value = null;
+        this.#initInputEl.val("");
         this.#chart.reset();
     }
 
@@ -138,7 +138,7 @@ export class App {
         log.message(`onRun() triggered`);
         this.#clearError();
         this.#chart.reset();
-        this.#runAlgorithm( this.#initInputEl.value )
+        this.#runAlgorithm( this.#initInputEl.val() )
             .then( integers => {
             if( integers ) {
                 this.#chart.update(integers);
