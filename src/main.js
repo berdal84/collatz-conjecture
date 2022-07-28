@@ -1,4 +1,3 @@
-const $ = require("jquery")
 import { LoadingScreen } from "./components/loading-screen";
 const loading = LoadingScreen.createInstance({ id: "loading", transitionDuration: 500 })
 

@@ -1,7 +1,6 @@
 
 import { Log } from "../js/log"
 import "./loading-screen.css"
-const $ = require("jquery")
 
 const log = new Log("LoadingScreen")
 
