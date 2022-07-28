@@ -46,7 +46,7 @@ export class App {
      * Clear the - last - error message
      */
     #clearError() {
-        this.#errorMsgEl.style.display = 'none';
+        this.#errorMsgEl.css("display", 'none');
     }
 
     /**
@@ -59,10 +59,10 @@ export class App {
 
         // create instances / get elements
         this.#chart = ChartBridge.createInstance(ChartBridgeType.CHARTJS);
-        this.#errorMsgEl  = document.getElementById('error-message');
-        this.#resetBtnEl  = document.getElementById('reset-btn');
-        this.#runBtnEl    = document.getElementById('run-btn');
-        this.#initInputEl = document.getElementById('init-input');
+        this.#errorMsgEl  = $('#error-message');
+        this.#resetBtnEl  = $('#reset-btn');
+        this.#runBtnEl    = $('#run-btn');
+        this.#initInputEl = $('#init-input');
 
         // check non null
         if( !this.#chart ){
@@ -107,17 +107,17 @@ export class App {
 
     /**
      * Start the application.
-     * App must be initialized (@see init())
+     * App must be initialized @see init()
      */
     start() {
         log.message(`starting ...`);
 
         // Trigger a run when user clicks on "Run" button or press Enter while editing the initial number input.
-        this.#runBtnEl.addEventListener( 'click', this.#onRun );
-        this.#initInputEl.addEventListener( 'keyup', ( event ) => { if( event.key === 'Enter' ) this.#onRun(); } );
+        this.#runBtnEl.click( this.#onRun );
+        this.#initInputEl.on( 'keyup', ( event ) => { if( event.key === 'Enter' ) this.#onRun(); } );
         
         // Trigger a reset when user clicks on "Reset" button
-        this.#resetBtnEl.addEventListener( 'click', this.#onReset );
+        this.#resetBtnEl.click( this.#onReset );
 
         log.message(`started`);
     }
