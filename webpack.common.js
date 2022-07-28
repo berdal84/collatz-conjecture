@@ -13,6 +13,10 @@ module.exports = {
       title: 'My App',
       filename: 'index.html',
       template: 'src/static/index.html'
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     })
   ],
   module: {

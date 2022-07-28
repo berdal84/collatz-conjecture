@@ -1,9 +1,16 @@
 
+import { Log } from "../js/log"
 import "./loading-screen.css"
+const $ = require("jquery")
+
+const log = new Log("LoadingScreen")
+
+const TRANSITION_DURATION_DEFAULT = 500
+const ELEMENT_ID_DEFAULT          = "loader"
 
 export class LoadingScreen extends HTMLElement {
 
-    #messageEl
+    static #instance
 
     constructor(){
         super() // HTMLElement
@@ -11,66 +18,80 @@ export class LoadingScreen extends HTMLElement {
 
     connectedCallback(){
 
-        // create inner html
-        const spinner = document.createElement("div")
-        spinner.id    = "loading-spinner"
-        spinner.setAttribute("class", "spinner-border text-info")
-        spinner.setAttribute("role", "status")
-        this.appendChild( spinner )
-        
-        const message = document.createElement("p")
-        message.id    = "loading-message"
-        this.appendChild(message)
-        this.#messageEl = message
+        log.message(`connected`)
 
-        this.setAttribute("transition-delay", 500)
-        this.setAttribute("transition-duration",  500)
-        this.setAttribute("show", true)
-        this.setAttribute("message", "Loading ...")
+        // add spinner
+        const spinner = $('<div id="loading-spinner" class="spinner-border text-info" role="status"></div>')
 
-        this.style.pointerEvents  = "none"
+        // add message
+        const message = $('<p id="loading-message" ></p>')
+
+        $(this)
+            .append( spinner )
+            .append( message )
+            .attr("transitionDuration", TRANSITION_DURATION_DEFAULT)
+            .attr("show", true)
+            .attr("message", "Loading ...")
+            .css("pointerEvents", "none")
     }
 
     attributeChangedCallback( name, oldValue, newValue ) {
-
+        log.message(`attribute changed: "${name}" is "${newValue}", was "${oldValue}" `)
         switch( name ){
             case "show":
                 if ( newValue === "true" ) {
-                    this.style.opacity = 1;
-                    document.body.style.visibility = "visible"
-                    this.visibility = "visible"
-                    this.style.pointerEvents  = "auto"
+
+                    $(this)
+                        .show()
+
+                    $(document.body)
+                        .fadeIn( $(this).attr("transitionDuration") )
 
                 } else {
-                    // prepare a smooth opacity transition
-                    this.style.opacity = 0;
-                    this.style.transitionProperty = "opacity";
-
-                    const delay    = this.getAttribute("transition-delay")
-                    const duration = this.getAttribute("transition-duration")
-
-
-                    this.style.transitionDelay    = `${delay/1000}s`;
-                    this.style.transitionDuration = `${duration/1000}s`;
-                    
-
-                    // hide when finished
-                    setTimeout(() => {
-                        this.style.pointerEvents  = "none"
-                    }, delay + duration)
+                    $(this)
+                        .fadeOut( {
+                            duration: $(this).attr("transitionDuration"),
+                            complete: () => $(this).remove()
+                        })
+                    LoadingScreen.#instance = null
                 }
                 break;
 
             case "message":
-                this.#messageEl.innerText = newValue
+                $(this)
+                    .children("p")
+                    .text(newValue)
         }
     }
 
-    static createInstance( id ){
-        const loading = document.createElement("loading-screen")
-        if( id ) loading.id = id
-        document.body.insertBefore( loading, document.body.childNodes[0])
-        return loading
+    message( newValue ) {
+        if( !newValue ) return $(this).attr("message")
+        $(this).attr("message", newValue)
+    }
+
+    show() {
+        $(this).attr("show", "true")
+    }
+
+    hide() {
+        $(this).attr("show", "false")
+    }
+
+    static createInstance( { id, transitionDuration } ) {
+
+        if ( LoadingScreen.#instance ) {
+            log.error("An instance already exists, returning it")
+            return LoadingScreen.#instance
+        }
+
+        log.message("create new instance")
+        const el = document.createElement("loading-screen")
+        el.id = id ?? ELEMENT_ID_DEFAULT
+        $(el).attr("transitionDuration",  transitionDuration ?? TRANSITION_DURATION_DEFAULT)
+
+        $("body").prepend(el)
+
+        return LoadingScreen.#instance = el
     }
 
     static get observedAttributes() {

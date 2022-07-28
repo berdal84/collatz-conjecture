@@ -13,6 +13,7 @@ loading-screen {
     align-items: center;
     justify-content: center;
     background-color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #loading-spinner {
