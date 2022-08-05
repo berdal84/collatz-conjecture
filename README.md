@@ -8,7 +8,7 @@
 
 The goal of this project is to provide a web application able to visualize the [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture).
 
-The app is published [here](http://collatz-visualizer.dalle-cort.fr)
+The app is published [here](http://collatzvisualizer.42borgata.com)
 
 ## Screenshot(s)
 
